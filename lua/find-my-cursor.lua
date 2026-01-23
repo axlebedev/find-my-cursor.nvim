@@ -1,8 +1,8 @@
 local M = {}
 
 local defaultOpts = {
-  FindCursorPre = function() end,
-  FindCursorPost = function() end,
+  FindCursorHookPre = function() end,
+  FindCursorHookPost = function() end,
   FindCursorDefaultColor = '#FF00FF',
 }
 M.config = defaultOpts
@@ -47,7 +47,7 @@ end
 
 -- Save global settings and prepare
 local function save_settings()
-  M.config.FindCursorPre()
+  M.config.FindCursorHookPre()
   isActivated = true
 
   save_window_local_settings()
@@ -87,7 +87,7 @@ local function restore_settings(...)
         savedCursorcolumnBg = nil
       end
       restore_window_local_settings()
-      M.config.FindCursorPost()
+      M.config.FindCursorHookPost()
     end
 
     vim.api.nvim_clear_autocmds({ group = 'au_findcursor' })
