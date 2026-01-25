@@ -63,12 +63,14 @@ end
 -- Restore window-local settings
 local function restore_window_local_settings()
   for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    local savedSettings = vim.api.nvim_win_get_var(winid, 'savedSettings')
-    if (savedSettings['cursorline'] ~= nil) then
-      vim.wo[winid].cursorline = savedSettings['cursorline']
-    end
-    if (savedSettings['cursorcolumn'] ~= nil) then
-      vim.wo[winid].cursorcolumn = savedSettings['cursorcolumn']
+    local ok, savedSettings = pcall(vim.api.nvim_win_get_var, winid, 'savedSettings')
+    if ok then
+      if (savedSettings['cursorline'] ~= nil) then
+        vim.wo[winid].cursorline = savedSettings['cursorline']
+      end
+      if (savedSettings['cursorcolumn'] ~= nil) then
+        vim.wo[winid].cursorcolumn = savedSettings['cursorcolumn']
+      end
     end
   end
 end
