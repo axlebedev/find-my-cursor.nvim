@@ -36,7 +36,7 @@ end
 -- Save window-local cursorline/cursorcolumn settings
 local function save_window_local_settings()
   for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    vim.api.nvim_win_set_var(winid, 'savedSettings', {
+    vim.api.nvim_win_set_var(winid, 'findMyCursorSavedSettings', {
       cursorline = vim.wo[winid].cursorline,
       cursorcolumn = vim.wo[winid].cursorcolumn,
     })
@@ -63,7 +63,8 @@ end
 -- Restore window-local settings
 local function restore_window_local_settings()
   for _, winid in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    local ok, savedSettings = pcall(vim.api.nvim_win_get_var, winid, 'savedSettings')
+    local ok, savedSettings = pcall(vim.api.nvim_win_get_var, winid, 'findMyCursorSavedSettings')
+    vim.api.nvim_win_set_var(winid, 'findMyCursorSavedSettings', nil)
     if ok then
       if (savedSettings['cursorline'] ~= nil) then
         vim.wo[winid].cursorline = savedSettings['cursorline']
